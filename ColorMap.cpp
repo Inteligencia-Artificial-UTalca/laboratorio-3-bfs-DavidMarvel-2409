@@ -2,7 +2,12 @@
 #include <iostream>
 
 
-
+#define red "\033[31m"
+#define green "\033[32m"
+#define yellow "\033[33m"
+#define blue "\033[34m"
+#define pink "\033[35m"
+#define RESET "\033[0m"
 /*
 red 31
 green 32

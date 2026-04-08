@@ -18,6 +18,7 @@ public:
    
     void print() const;                 //prints map
     void print(std::vector<std::pair<int,int>>) const; //prints map and path 
+    void loadFromFile(std::string fileName);
 
     friend bool operator==(const Map& lhs, const Map& rhs); //declares global operator friend 
     friend class Search;                //to access protected members. Otherwise, need accessors.

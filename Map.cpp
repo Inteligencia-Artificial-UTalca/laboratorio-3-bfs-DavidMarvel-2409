@@ -2,6 +2,13 @@
 #include <iostream>
 #include <fstream>
 
+#define red "\033[31m"
+#define green "\033[32m"
+#define yellow "\033[33m"
+#define blue "\033[34m"
+#define pink "\033[35m"
+#define RESET "\033[0m"
+
 Map::Map():h(0),w(0){
 
 }
@@ -60,4 +67,21 @@ void Map::print(std::vector<std::pair<int,int>> path) const{
 
 bool operator==(const Map& lhs, const Map& rhs){
     return lhs.h==rhs.h && lhs.w==rhs.w && lhs._map==rhs._map;
+}
+
+void Map::loadFromFile(std::string fileName){
+    std::ifstream file(fileName);
+    if (!file) {
+        std::cerr << red << "ERROR: nose pudo abrir el archivo " << fileName << std::endl;
+        return;
+    }
+    file >> h >> w;
+    /*Redimencionar matriz*/
+    _map.resize(h,std::vector<int>(w));
+    for(int i = 0; i < h; i++){
+        for (int j = 0; j < w; j++){
+            file >> _map[i][j];
+        }
+    }
+    file.close();
 }
