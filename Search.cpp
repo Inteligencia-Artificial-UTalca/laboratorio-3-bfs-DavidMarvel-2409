@@ -106,3 +106,65 @@ std::vector<std::pair<int,int>> Search::BFS(const Map& map, std::pair<int,int> s
     path.push_back(goal);
     return path;
 }
+
+std::vector<std::pair<int,int>> Search::BeFSGreedy(const Map& map, std::pair<int,int> start, std::pair<int,int> goal){
+    std::cout<<"===========================\nRunning BFS...\n";
+	auto startTime = std::chrono::high_resolution_clock::now();
+
+    //stores possible directions
+    std::pair<int,int> dirs[]{{-1,0},{0,1},{1,0},{0,-1}};
+
+    bool visited[map.h][map.w]{false};      //we'll just use a matrix og booleans to indicated if visited
+    std::queue<std::pair<int,int>> OPEN;
+    std::unordered_map<std::pair<int,int>,std::pair<int,int>> pathCache;    ////hashmap to reconstruct path: child -> parent
+
+    //add firts node to open list
+    OPEN.push(start);
+    visited[start.first][start.second] = true;
+
+    while(!OPEN.empty()){
+        //get node
+        auto pos = OPEN.front();
+        OPEN.pop();
+        //check if node is goal
+		if(pos==goal){
+			auto endTime = std::chrono::high_resolution_clock::now();
+			int count=0;
+            for(int i=0;i<map.h;i++){
+                for(int j=0;j<map.w;j++){
+                    if(visited[i][j])count++;
+                }
+            }
+            std::cout<<"VISITED: "<<count<<std::endl;
+			std::cout<<"OPEN: "<<OPEN.size()<<std::endl;
+			std::cout<<"FOUND in "<<(endTime-startTime).count()/1000000.0<<"ms\n";
+			return reconstruct(pathCache,pos);
+		}
+
+		for(auto dir:dirs){
+			//copy the position
+            //then move it
+            std::pair<int, int> neighbor = {pos.first + dir.first, pos.second + dir.second};
+
+            //if illegal or visited, skip it
+            //add child to open list
+            //register path
+            if (neighbor.first >= 0 && neighbor.first < map.h &&
+                neighbor.second >= 0 && neighbor.second < map.w &&
+                !visited[neighbor.first][neighbor.second] &&
+                map.isWalkable(neighbor.first, neighbor.second) == true) { // Verificar si es transitable
+                
+                visited[neighbor.first][neighbor.second] = true;
+                OPEN.push(neighbor);
+                pathCache[neighbor] = pos;
+            }
+		}
+	}
+	std::cout<<"NOT FOUND!!!!\n";
+    
+    //let's just return start and goal to draw them
+    std::vector<std::pair<int,int>> path;
+    path.push_back(start);
+    path.push_back(goal);
+    return path;
+}
