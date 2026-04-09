@@ -46,9 +46,7 @@ std::vector<std::pair<int,int>> Search::reconstruct(const std::unordered_map<std
 }
 
 float Search::Heuristic(std::pair<int,int> start, std::pair<int,int> goal){
-    int valFirst = start.first - goal.first, valSecond = start.second - goal.second;
-    if (valFirst < 0) valFirst *= -1;
-    if (valSecond < 0) valSecond *= -1;
+    int valFirst = std::abs(start.first - goal.first), valSecond = std::abs(start.second - goal.second);
     return valFirst + valSecond;
 }
 
@@ -113,9 +111,8 @@ std::vector<std::pair<int,int>> Search::BFS(const Map& map, std::pair<int,int> s
     path.push_back(goal);
     return path;
 }
-
-std::vector<std::pair<int,int>> Search::Greedy(const Map& map, std::pair<int,int> start, std::pair<int,int> goal){
-    std::cout<<"===========================\nRunning BFS...\n";
+std::vector<std::pair<int,int>> Search::greedyBFS(const Map & map, std::pair<int,int> start, std::pair<int,int> goal) {
+    std::cout<<"===========================\nRunning greedyBFS...\n";
 	auto startTime = std::chrono::high_resolution_clock::now();
 
     //stores possible directions
