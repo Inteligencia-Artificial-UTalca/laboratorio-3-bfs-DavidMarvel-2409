@@ -101,10 +101,13 @@ int main(int argc, char *argv[]){
 
     auto path = Search::BFS(map,{atoi(argv[2]),atoi(argv[3])},{atoi(argv[4]),atoi(argv[5])});
     colorMap.print(path);
+    auto path2 = Search::greedyBFS(map,{atoi(argv[2]),atoi(argv[3])},{atoi(argv[4]),atoi(argv[5])});
+    colorMap.print(path2);
     
     //Calculate path distance
-    int distance = path.size() - 1;
+    int distance = path.size() - 1, distance2 = path2.size() - 1;
     //Print path distance
-    std::cout << RESET << green << "Cantidad de pasos: " << RESET << distance << "\n\n";
+    std::cout << RESET << green << "Cantidad de pasos BFS: " << RESET << distance << "\n\n";
+    std::cout << RESET << green << "Cantidad de pasos greedyBFS: " << RESET << distance2 << "\n\n";
     return 0;
 }

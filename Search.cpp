@@ -119,7 +119,12 @@ std::vector<std::pair<int,int>> Search::greedyBFS(const Map & map, std::pair<int
     std::pair<int,int> dirs[]{{-1,0},{0,1},{1,0},{0,-1}};
 
     bool visited[map.h][map.w]{false};      //we'll just use a matrix og booleans to indicated if visited
-    std::queue<std::pair<int,int>> OPEN;
+
+    auto comparaHeuristica = [&](std::pair<int,int> a, std::pair<int,int> b){
+        return Heuristic(a, goal) > Heuristic(b, goal);
+    };
+    //std::queue<std::pair<int,int>> OPEN;
+    std::priority_queue<std::pair<int,int>, std::vector<std::pair<int,int>>, decltype(comparaHeuristica)> OPEN(comparaHeuristica);
     std::unordered_map<std::pair<int,int>,std::pair<int,int>> pathCache;    ////hashmap to reconstruct path: child -> parent
 
     //add firts node to open list
@@ -128,7 +133,7 @@ std::vector<std::pair<int,int>> Search::greedyBFS(const Map & map, std::pair<int
 
     while(!OPEN.empty()){
         //get node
-        auto pos = OPEN.front();
+        auto pos = OPEN.top();
         OPEN.pop();
         //check if node is goal
 		if(pos==goal){
