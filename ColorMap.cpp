@@ -8,6 +8,7 @@
 #define blue "\033[34m"
 #define pink "\033[35m"
 #define RESET "\033[0m"
+#define Bloque "[+]"
 /*
 red 31
 green 32
@@ -24,8 +25,17 @@ ColorMap::ColorMap(const Map& rhs):Map(rhs),colors{37,34,32,31,33}{
 
 void ColorMap::print() const{
     for(int i=0;i<h;i++){
+        std::cout << "          ";
         for(int j=0;j<w;j++){
-            std::cout<<"\033[1;" << colors[_map[i][j]] << "m"<<_map[i][j]<<" ";
+            //std::cout<<"\033[1;" << colors[_map[i][j]] << "m"<<_map[i][j]<<" ";
+            switch (_map[i][j])
+            {
+                case 0: std::cout << RESET << Bloque; break;
+                case 1: std::cout << RESET << blue << Bloque; break;
+                case 2: std::cout << RESET << green << Bloque; break;
+                case 3: std::cout << RESET << red << Bloque; break;
+                case 4: std::cout << RESET << yellow << Bloque; break;
+            }
         }
         std::cout<<std::endl;
     }
@@ -46,9 +56,17 @@ void ColorMap::print(std::vector<std::pair<int,int>> path) const{
      __map[path[path.size()-1].first][path[path.size()-1].second]=3;
 
     for(int i=0;i<h;i++){
+        std::cout << "          ";
         for(int j=0;j<w;j++){
-
-            std::cout<<"\033[1;" << colors[__map[i][j]] << "m"<<__map[i][j]<<" ";
+            //std::cout<<"\033[1;" << colors[__map[i][j]] << "m"<<__map[i][j]<<" ";
+            switch (__map[i][j])
+            {
+                case 0: std::cout << RESET << Bloque; break;
+                case 1: std::cout << RESET << blue << Bloque; break;
+                case 2: std::cout << RESET << green << Bloque; break;
+                case 3: std::cout << RESET << red << Bloque; break;
+                case 4: std::cout << RESET << yellow << Bloque; break;
+            }
         }
         std::cout<<std::endl;
     }
