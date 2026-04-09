@@ -78,6 +78,7 @@ int main(int argc, char *argv[]){
         std::cerr << red << "Error de sintaxis\n" 
         << yellow << "La sintaxis correcta es: ./busqueda [nombre del mapa].txt coorX1 coorY1 coorX2 coorY2" 
         << RESET << std::endl;
+        return 0;
     }
     for (int i = 2; i < 6; i++){
         if (!esNumero(argv[i])){
@@ -91,7 +92,7 @@ int main(int argc, char *argv[]){
     int h, w;
     if (!archivoCorrecto(argv[1], h, w)) return 1;
     if (!coorLegal(x1,y1,x2,y2,h,w)) return 1;
-    
+
 
     //Load map with class Map
     Map map(argv[1]);
@@ -99,6 +100,7 @@ int main(int argc, char *argv[]){
     colorMap.print();
 
     auto path = Search::BFS(map,{atoi(argv[2]),atoi(argv[3])},{atoi(argv[4]),atoi(argv[5])}); 
+    //std::cout << RESET << "\nhola\n" << RESET;
     colorMap.print(path);
     
     //Calculate path distance

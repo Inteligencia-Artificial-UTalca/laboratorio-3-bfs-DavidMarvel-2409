@@ -32,6 +32,11 @@ void ColorMap::print() const{
     std::cout<<"\033[1;37m\n";
 }
 void ColorMap::print(std::vector<std::pair<int,int>> path) const{
+    if (path.empty()) {
+        std::cerr << red << "ERROR: No hay camino para mostrar\n" << RESET;
+        print();
+        return;
+    }
     auto __map=_map;
 
     __map[path[0].first][path[0].second]=2;

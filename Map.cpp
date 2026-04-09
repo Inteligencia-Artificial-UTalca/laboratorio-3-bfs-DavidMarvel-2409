@@ -16,9 +16,22 @@ Map::Map():h(0),w(0){
 Map::Map(std::string filename){
     
     //Load the file
+    std::ifstream file(filename);
+    if (!file) {
+        std::cerr << red << "ERROR: nose pudo abrir el archivo " << filename << std::endl;
+        return;
+    }
     //Resize map
+    file >> h >> w;
+    _map.resize(h,std::vector<int>(w));
     //Save file information in map
+    for(int i = 0; i < h; i++){
+        for (int j = 0; j < w; j++){
+            file >> _map[i][j];
+        }
+    }
     //Close file
+    file.close();
 }   
 
 Map::Map(const Map& rhs):h(rhs.h),w(rhs.w),_map(rhs._map){
@@ -69,19 +82,13 @@ bool operator==(const Map& lhs, const Map& rhs){
     return lhs.h==rhs.h && lhs.w==rhs.w && lhs._map==rhs._map;
 }
 
-void Map::loadFromFile(std::string fileName){
-    std::ifstream file(fileName);
-    if (!file) {
-        std::cerr << red << "ERROR: nose pudo abrir el archivo " << fileName << std::endl;
-        return;
+bool Map::isWalkable(int x, int y) const {
+    
+    if (x < 0 || x >= h || y < 0 || y >= w) {
+        return false;
     }
-    file >> h >> w;
-    /*Redimencionar matriz*/
-    _map.resize(h,std::vector<int>(w));
-    for(int i = 0; i < h; i++){
-        for (int j = 0; j < w; j++){
-            file >> _map[i][j];
-        }
+    if (_map[x][y] == 1){
+        return false;
     }
-    file.close();
+    return true;
 }

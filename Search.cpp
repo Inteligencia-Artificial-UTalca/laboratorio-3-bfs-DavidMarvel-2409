@@ -31,6 +31,11 @@ std::vector<std::pair<int,int>> Search::reconstruct(const std::unordered_map<std
 	//while(true){
         //implement
 	//}
+    while (pathCache.find(node) != pathCache.end()) {
+        nodes.push_front(node);
+        node = pathCache.at(node);
+    }
+    nodes.push_front(node);
 
     //revert path and return it
     std::vector<std::pair<int,int>> vec;
@@ -52,12 +57,20 @@ std::vector<std::pair<int,int>> Search::BFS(const Map& map, std::pair<int,int> s
     std::unordered_map<std::pair<int,int>,std::pair<int,int>> pathCache;    ////hashmap to reconstruct path: child -> parent
 
     //add firts node to open list
+    OPEN.push(start);
+    visited[start.first][start.second] = true;
 
     while(!OPEN.empty()){
         //get node
-
+        auto pos = OPEN.front();
+        OPEN.pop();
+        /*if (pos == goal) {
+            auto endTime = std::chrono::high_resolution_clock::now();
+            std::cout << "FOUND in " << (endTime - startTime).count() / 1000000.0 << "ms\n";
+            return reconstruct(pathCache, pos);
+        }*/
         //check if node is goal
-		/*if(pos==goal){
+		if(pos==goal){
 			auto endTime = std::chrono::high_resolution_clock::now();
 			int count=0;
             for(int i=0;i<map.h;i++){
@@ -69,18 +82,25 @@ std::vector<std::pair<int,int>> Search::BFS(const Map& map, std::pair<int,int> s
 			std::cout<<"OPEN: "<<OPEN.size()<<std::endl;
 			std::cout<<"FOUND in "<<(endTime-startTime).count()/1000000.0<<"ms\n";
 			return reconstruct(pathCache,pos);
-		}*/
+		}
 
 		for(auto dir:dirs){
 			//copy the position
-
             //then move it
-            
-            //if illegal or visited, skip it
-            
-            //add child to open list
+            std::pair<int, int> neighbor = {pos.first + dir.first, pos.second + dir.second};
 
+            //if illegal or visited, skip it
+            //add child to open list
             //register path
+            if (neighbor.first >= 0 && neighbor.first < map.h &&
+                neighbor.second >= 0 && neighbor.second < map.w &&
+                !visited[neighbor.first][neighbor.second] &&
+                map.isWalkable(neighbor.first, neighbor.second) == true) { // Verificar si es transitable
+                
+                visited[neighbor.first][neighbor.second] = true;
+                OPEN.push(neighbor);
+                pathCache[neighbor] = pos;
+            }
 		}
 	}
 	std::cout<<"NOT FOUND!!!!\n";
