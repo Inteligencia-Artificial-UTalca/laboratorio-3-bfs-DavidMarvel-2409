@@ -45,8 +45,8 @@ std::vector<std::pair<int,int>> Search::reconstruct(const std::unordered_map<std
     return vec;
 }
 
-int heuristicaManhattan(std::pair<int,int> A, std::pair<int,int> B){
-    int valFirst = A.first - B.first, valSecond = A.second - B.second;
+float Search::Heuristic(std::pair<int,int> start, std::pair<int,int> goal){
+    int valFirst = start.first - goal.first, valSecond = start.second - goal.second;
     if (valFirst < 0) valFirst *= -1;
     if (valSecond < 0) valSecond *= -1;
     return valFirst + valSecond;
@@ -114,7 +114,7 @@ std::vector<std::pair<int,int>> Search::BFS(const Map& map, std::pair<int,int> s
     return path;
 }
 
-std::vector<std::pair<int,int>> Search::BeFSGreedy(const Map& map, std::pair<int,int> start, std::pair<int,int> goal){
+std::vector<std::pair<int,int>> Search::Greedy(const Map& map, std::pair<int,int> start, std::pair<int,int> goal){
     std::cout<<"===========================\nRunning BFS...\n";
 	auto startTime = std::chrono::high_resolution_clock::now();
 
