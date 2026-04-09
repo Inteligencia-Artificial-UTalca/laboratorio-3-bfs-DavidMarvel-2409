@@ -64,11 +64,6 @@ std::vector<std::pair<int,int>> Search::BFS(const Map& map, std::pair<int,int> s
         //get node
         auto pos = OPEN.front();
         OPEN.pop();
-        /*if (pos == goal) {
-            auto endTime = std::chrono::high_resolution_clock::now();
-            std::cout << "FOUND in " << (endTime - startTime).count() / 1000000.0 << "ms\n";
-            return reconstruct(pathCache, pos);
-        }*/
         //check if node is goal
 		if(pos==goal){
 			auto endTime = std::chrono::high_resolution_clock::now();

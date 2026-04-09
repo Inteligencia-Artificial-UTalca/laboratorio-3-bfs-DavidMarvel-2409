@@ -99,12 +99,12 @@ int main(int argc, char *argv[]){
     ColorMap colorMap(map);
     colorMap.print();
 
-    auto path = Search::BFS(map,{atoi(argv[2]),atoi(argv[3])},{atoi(argv[4]),atoi(argv[5])}); 
-    //std::cout << RESET << "\nhola\n" << RESET;
+    auto path = Search::BFS(map,{atoi(argv[2]),atoi(argv[3])},{atoi(argv[4]),atoi(argv[5])});
     colorMap.print(path);
     
     //Calculate path distance
+    int distance = path.size() - 1;
     //Print path distance
-    
+    std::cout << RESET << green << "Cantidad de pasos: " << RESET << distance << "\n\n";
     return 0;
 }
