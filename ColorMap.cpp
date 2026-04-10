@@ -8,7 +8,7 @@
 #define blue "\033[34m"
 #define pink "\033[35m"
 #define RESET "\033[0m"
-#define Bloque "[+]"
+#define Bloque "[]"
 /*
 red 31
 green 32
