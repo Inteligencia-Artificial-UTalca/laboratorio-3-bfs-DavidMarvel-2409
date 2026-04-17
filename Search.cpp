@@ -16,7 +16,6 @@ namespace std
 		{
             hash<int> hasher;
 			return hasher(p.first) ^ (hasher(p.second)<<1);
-
 		}
 	};
 }
@@ -25,12 +24,6 @@ std::vector<std::pair<int,int>> Search::reconstruct(const std::unordered_map<std
 	std::deque<std::pair<int,int>> nodes;
 	auto node = start;//make copy
 
-    //traverse path from goal to start
-
-    //
-	//while(true){
-        //implement
-	//}
     while (pathCache.find(node) != pathCache.end()) {
         nodes.push_front(node);
         node = pathCache.at(node);

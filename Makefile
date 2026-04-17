@@ -1,7 +1,7 @@
 CXX= g++
 CXXFLAGS = -O3 -Wall -Wextra -std=c++14
 
-OBJS = main.o Map.o Search.o ColorMap.o
+OBJS = main.o Map.o Search.o ColorMap.o Colores.h
 
 
 TARGET = busqueda

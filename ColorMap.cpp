@@ -1,22 +1,6 @@
 #include "ColorMap.h"
+#include "Colores.h"
 #include <iostream>
-
-
-#define red "\033[31m"
-#define green "\033[32m"
-#define yellow "\033[33m"
-#define blue "\033[34m"
-#define pink "\033[35m"
-#define RESET "\033[0m"
-#define Bloque "[]"
-/*
-red 31
-green 32
-yellow 33
-blue 34
-pink 35
-white 37
-*/
 
 
 ColorMap::ColorMap(const Map& rhs):Map(rhs),colors{37,34,32,31,33}{
@@ -31,10 +15,10 @@ void ColorMap::print() const{
             switch (_map[i][j])
             {
                 case 0: std::cout << RESET << Bloque; break;
-                case 1: std::cout << RESET << blue << Bloque; break;
-                case 2: std::cout << RESET << green << Bloque; break;
-                case 3: std::cout << RESET << red << Bloque; break;
-                case 4: std::cout << RESET << yellow << Bloque; break;
+                case 1: std::cout << RESET << ColorBlue << Bloque; break;
+                case 2: std::cout << RESET << ColorGreen << Bloque; break;
+                case 3: std::cout << RESET << ColorRed << Bloque; break;
+                case 4: std::cout << RESET << ColorYellow << Bloque; break;
             }
         }
         std::cout<<std::endl;
@@ -43,7 +27,7 @@ void ColorMap::print() const{
 }
 void ColorMap::print(std::vector<std::pair<int,int>> path) const{
     if (path.empty()) {
-        std::cerr << red << "ERROR: No hay camino para mostrar\n" << RESET;
+        std::cerr << ColorRed << "ERROR: No hay camino para mostrar\n" << RESET;
         print();
         return;
     }
@@ -62,10 +46,10 @@ void ColorMap::print(std::vector<std::pair<int,int>> path) const{
             switch (__map[i][j])
             {
                 case 0: std::cout << RESET << Bloque; break;
-                case 1: std::cout << RESET << blue << Bloque; break;
-                case 2: std::cout << RESET << green << Bloque; break;
-                case 3: std::cout << RESET << red << Bloque; break;
-                case 4: std::cout << RESET << yellow << Bloque; break;
+                case 1: std::cout << RESET << ColorBlue << Bloque; break;
+                case 2: std::cout << RESET << ColorGreen << Bloque; break;
+                case 3: std::cout << RESET << ColorRed << Bloque; break;
+                case 4: std::cout << RESET << ColorYellow << Bloque; break;
             }
         }
         std::cout<<std::endl;

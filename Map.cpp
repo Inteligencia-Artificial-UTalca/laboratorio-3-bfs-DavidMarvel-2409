@@ -1,13 +1,7 @@
 #include "Map.h"
+#include "Colores.h"
 #include <iostream>
 #include <fstream>
-
-#define red "\033[31m"
-#define green "\033[32m"
-#define yellow "\033[33m"
-#define blue "\033[34m"
-#define pink "\033[35m"
-#define RESET "\033[0m"
 
 Map::Map():h(0),w(0){
 
@@ -18,7 +12,7 @@ Map::Map(std::string filename){
     //Load the file
     std::ifstream file(filename);
     if (!file) {
-        std::cerr << red << "ERROR: nose pudo abrir el archivo " << filename << std::endl;
+        std::cerr << ColorRed << "ERROR: nose pudo abrir el archivo " << filename << std::endl;
         return;
     }
     //Resize map
