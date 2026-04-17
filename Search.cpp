@@ -224,18 +224,6 @@ std::vector<std::pair<int,int>> Search::Astar(const Map & map, std::pair<int,int
             //then move it
             std::pair<int, int> neighbor = {pos.first + dir.first, pos.second + dir.second};
 
-            //if illegal or visited, skip it
-            //add child to open list
-            //register path
-            // if (neighbor.first >= 0 && neighbor.first < map.h &&
-            //     neighbor.second >= 0 && neighbor.second < map.w &&
-            //     !visited[neighbor.first][neighbor.second] &&
-            //     map.isWalkable(neighbor.first, neighbor.second) == true) { // Verificar si es transitable
-                
-            //     visited[neighbor.first][neighbor.second] = true;
-            //     OPEN.push(neighbor);
-            //     pathCache[neighbor] = pos;
-            // }
             if (neighbor.first < 0 || neighbor.first >= map.h || neighbor.second < 0 || neighbor.second >= map.w) continue;
             if (!map.isWalkable(neighbor.first, neighbor.second)) continue;
 
