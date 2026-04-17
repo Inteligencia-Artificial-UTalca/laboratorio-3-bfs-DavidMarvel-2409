@@ -177,10 +177,17 @@ std::vector<std::pair<int,int>> Search::Astar(const Map & map, std::pair<int,int
     //stores possible directions
     std::pair<int,int> dirs[]{{-1,0},{0,1},{1,0},{0,-1}};
 
-    bool visited[map.h][map.w]{false};      //we'll just use a matrix og booleans to indicated if visited
+    //bool visited[map.h][map.w]{false};      //we'll just use a matrix og booleans to indicated if visited
+    //costo desde inicio
+    std::vector<std::vector<float>> gScore(map.h,std::vector<float>(map.w,std::numeric_limits<float>::infinity()));
+
+    //cerrados
+    bool closed[map.h][map.w]{false};
 
     auto comparaHeuristica = [&](std::pair<int,int> a, std::pair<int,int> b){
-        return Heuristic(a, goal) > Heuristic(b, goal);
+        float fA = gScore[a.first][a.second] + Heuristic(a,goal);
+        float fB = gScore[b.first][b.second] + Heuristic(b,goal);
+        return fA > fB;
     };
     //std::queue<std::pair<int,int>> OPEN;
     std::priority_queue<std::pair<int,int>, std::vector<std::pair<int,int>>, decltype(comparaHeuristica)> OPEN(comparaHeuristica);
@@ -188,19 +195,22 @@ std::vector<std::pair<int,int>> Search::Astar(const Map & map, std::pair<int,int
 
     //add firts node to open list
     OPEN.push(start);
-    visited[start.first][start.second] = true;
+    //visited[start.first][start.second] = true;
+    gScore[start.first][start.second] = 0;
 
     while(!OPEN.empty()){
         //get node
         auto pos = OPEN.top();
         OPEN.pop();
+        if (closed[pos.first][pos.second]) continue;
+        closed[pos.first][pos.second] = true;
         //check if node is goal
 		if(pos==goal){
 			auto endTime = std::chrono::high_resolution_clock::now();
 			int count=0;
             for(int i=0;i<map.h;i++){
                 for(int j=0;j<map.w;j++){
-                    if(visited[i][j])count++;
+                    if(closed[i][j])count++;
                 }
             }
             std::cout<<"VISITED: "<<count<<std::endl;
@@ -217,12 +227,22 @@ std::vector<std::pair<int,int>> Search::Astar(const Map & map, std::pair<int,int
             //if illegal or visited, skip it
             //add child to open list
             //register path
-            if (neighbor.first >= 0 && neighbor.first < map.h &&
-                neighbor.second >= 0 && neighbor.second < map.w &&
-                !visited[neighbor.first][neighbor.second] &&
-                map.isWalkable(neighbor.first, neighbor.second) == true) { // Verificar si es transitable
+            // if (neighbor.first >= 0 && neighbor.first < map.h &&
+            //     neighbor.second >= 0 && neighbor.second < map.w &&
+            //     !visited[neighbor.first][neighbor.second] &&
+            //     map.isWalkable(neighbor.first, neighbor.second) == true) { // Verificar si es transitable
                 
-                visited[neighbor.first][neighbor.second] = true;
+            //     visited[neighbor.first][neighbor.second] = true;
+            //     OPEN.push(neighbor);
+            //     pathCache[neighbor] = pos;
+            // }
+            if (neighbor.first < 0 || neighbor.first >= map.h || neighbor.second < 0 || neighbor.second >= map.w) continue;
+            if (!map.isWalkable(neighbor.first, neighbor.second)) continue;
+
+            float tentative_g = gScore[pos.first][pos.second] + 1;
+            if (tentative_g < gScore[neighbor.first][neighbor.second]) {
+                gScore[neighbor.first][neighbor.second] = tentative_g;
+
                 OPEN.push(neighbor);
                 pathCache[neighbor] = pos;
             }
