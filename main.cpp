@@ -88,7 +88,6 @@ int main(int argc, char *argv[]){
     if (!archivoCorrecto(argv[1], h, w)) return 1;
     if (!coorLegal(x1,y1,x2,y2,h,w)) return 1;
 
-
     //Load map with class Map
     Map map(argv[1]);
     ColorMap colorMap(map);
@@ -96,16 +95,29 @@ int main(int argc, char *argv[]){
 
     auto path = Search::BFS(map,{atoi(argv[2]),atoi(argv[3])},{atoi(argv[4]),atoi(argv[5])});
     colorMap.print(path);
+    int distance = path.size() - 1;
+    std::cout << RESET << ColorGreen << "Cantidad de pasos BFS: " << RESET << distance << "\n\n";
+
     auto path2 = Search::greedyBFS(map,{atoi(argv[2]),atoi(argv[3])},{atoi(argv[4]),atoi(argv[5])});
     colorMap.print(path2);
+    int distance2 = path2.size() - 1;
+    std::cout << RESET << ColorGreen << "Cantidad de pasos greedyBFS: " << RESET << distance2 << "\n\n";
+
     auto path3 = Search::Astar(map,{atoi(argv[2]),atoi(argv[3])},{atoi(argv[4]),atoi(argv[5])});
     colorMap.print(path3);
-    
-    //Calculate path distance
-    int distance = path.size() - 1, distance2 = path2.size() - 1, distance3 = path3.size() -1;
-    //Print path distance
-    std::cout << RESET << ColorGreen << "Cantidad de pasos BFS: " << RESET << distance << "\n\n";
-    std::cout << RESET << ColorGreen << "Cantidad de pasos greedyBFS: " << RESET << distance2 << "\n\n";
+    int distance3 = path3.size() -1;
     std::cout << RESET << ColorGreen << "Cantidad de pasos Astar: " << RESET << distance3 << "\n\n";
+
+    auto path4 = Search::WeightedAstar(map,{atoi(argv[2]),atoi(argv[3])},{atoi(argv[4]),atoi(argv[5])}, 2);
+    colorMap.print(path4);
+    int distance4 = path4.size() -1;
+    std::cout << RESET << ColorGreen << "Cantidad de pasos WeightedAstar: " << RESET << distance4 << "\n\n";
+    
+    // //Calculate path distance
+    // int distance = path.size() - 1, distance2 = path2.size() - 1, distance3 = path3.size() -1;
+    // //Print path distance
+    // std::cout << RESET << ColorGreen << "Cantidad de pasos BFS: " << RESET << distance << "\n\n";
+    // std::cout << RESET << ColorGreen << "Cantidad de pasos greedyBFS: " << RESET << distance2 << "\n\n";
+    // std::cout << RESET << ColorGreen << "Cantidad de pasos Astar: " << RESET << distance3 << "\n\n";
     return 0;
 }
