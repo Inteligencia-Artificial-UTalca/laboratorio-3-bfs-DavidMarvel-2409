@@ -86,3 +86,6 @@ bool Map::isWalkable(int x, int y) const {
     }
     return true;
 }
+std::vector<std::vector<int>> Map::get_map(){
+    return _map;
+}

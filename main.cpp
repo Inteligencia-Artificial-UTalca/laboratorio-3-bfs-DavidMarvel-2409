@@ -9,7 +9,6 @@
 #include <cstdlib>
 
 
-
 bool esNumero(const std::string& str) {
     if (str.empty()) return false;
     for (char c : str) {
@@ -64,6 +63,44 @@ bool coorLegal(const int& x1, const int& y1, const int& x2, const int& y2, const
     }
     return true;
 }
+bool existeArchivo(const std::string& nombre){
+    std::ifstream f(nombre);
+    return f.good();
+}
+void guardarEjecucionTXT(Map& mmap, std::vector<std::pair<int,int>>& path, std::string filename){
+    std::string finalName = filename + ".txt";
+    int num = 1;
+    while(existeArchivo(finalName)){
+        finalName = filename + "(" + std::to_string(num) + ").txt";
+        num++;
+    }
+    std::ofstream archivo(finalName);
+
+    if (!archivo){
+        std::cerr << "Error al crear el archivo\n";
+        return;
+    }
+    auto _map = mmap.get_map();
+
+    int x = _map[0].size(), y = _map.size();
+
+    archivo << x << " " << y << "\n";
+    
+    _map[path[0].first][path[0].second]=3;
+    for(int i=1;i<(int)path.size()-1;i++){
+        _map[path[i].first][path[i].second]=2;
+    }
+    _map[path[path.size()-1].first][path[path.size()-1].second]=4;
+
+    for (int i = 0; i < y; i++){
+        for (int j = 0; j < x; j++){
+            archivo << _map[i][j] << " ";
+        }
+        archivo << "\n";
+    }
+    archivo.close();
+
+}
 
 int main(int argc, char *argv[]){
 
@@ -97,21 +134,29 @@ int main(int argc, char *argv[]){
     colorMap.print(path);
     int distance = path.size() - 1;
     std::cout << RESET << ColorGreen << "Cantidad de pasos BFS: " << RESET << distance << "\n\n";
+    guardarEjecucionTXT(map,path,"map_BFS");
+    if (path.size() < 2) std::cout << ColorRed << "ruta no encontrada\n\n" << RESET; 
 
     auto path2 = Search::greedyBFS(map,{atoi(argv[2]),atoi(argv[3])},{atoi(argv[4]),atoi(argv[5])});
     colorMap.print(path2);
     int distance2 = path2.size() - 1;
     std::cout << RESET << ColorGreen << "Cantidad de pasos greedyBFS: " << RESET << distance2 << "\n\n";
+    guardarEjecucionTXT(map,path,"map_greedyBFS");
+    if (path2.size() < 2) std::cout << ColorRed << "ruta no encontrada\n\n" << RESET;
 
     auto path3 = Search::Astar(map,{atoi(argv[2]),atoi(argv[3])},{atoi(argv[4]),atoi(argv[5])});
     colorMap.print(path3);
     int distance3 = path3.size() -1;
     std::cout << RESET << ColorGreen << "Cantidad de pasos Astar: " << RESET << distance3 << "\n\n";
+    guardarEjecucionTXT(map,path,"map_Astar");
+    if (path3.size() < 2) std::cout << ColorRed << "ruta no encontrada\n\n" << RESET;
 
     auto path4 = Search::WeightedAstar(map,{atoi(argv[2]),atoi(argv[3])},{atoi(argv[4]),atoi(argv[5])}, 2);
     colorMap.print(path4);
     int distance4 = path4.size() -1;
     std::cout << RESET << ColorGreen << "Cantidad de pasos WeightedAstar: " << RESET << distance4 << "\n\n";
+    guardarEjecucionTXT(map,path,"map_WeightedAstar");
+    if (path4.size() <= 2) std::cout << ColorRed << "ruta no encontrada\n\n" << RESET;
     
     // //Calculate path distance
     // int distance = path.size() - 1, distance2 = path2.size() - 1, distance3 = path3.size() -1;
